@@ -44,10 +44,10 @@ def model_inferencing_and_post_processing(inputs,model,img_size):
     return output
 
 
-def get_depth_map_image(image=None):
+def get_depth_map_image(image=None,midas_model=None,midas_tranforms=None,):
     
-    midas_model = load_midas_model(model_type="DPT_Hybrid")
-    midas_transforms = load_transformations()
+    # midas_model = load_midas_model(model_type="DPT_Hybrid")
+    # midas_transforms = load_transformations()
 
     # img_file_path = "images/london-street-view-songquan-deng.jpg"
     # pil_image = Image.open(image)
@@ -57,7 +57,7 @@ def get_depth_map_image(image=None):
     # print(img_size)
     model_inputs = load_and_process_image(
         img=image,
-        transform=midas_transforms,
+        transform=midas_tranforms,
     )
     
     output = model_inferencing_and_post_processing(
@@ -78,4 +78,5 @@ def get_depth_map_image(image=None):
 
 
 if __name__=="__main__":
-    get_depth_map_image()
+    # get_depth_map_image()
+    pass

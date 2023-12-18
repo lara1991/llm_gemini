@@ -9,7 +9,7 @@ from langchain_core.messages import HumanMessage
 
 from PIL import Image
 
-from image_depth import get_depth_map_image
+from image_depth import get_depth_map_image,load_midas_model,load_transformations
 
 # from trulens_eval.feedback import Feedback
 
@@ -31,12 +31,13 @@ def get_prompt_templates():
     Answer:
     """
 
-    main_chat_system_prompt_template = """You are an assisting to a blind person. If the context is provided please use the provided \
-        context and answer accurately based on the context. Use the given current conversation history appropriately if required.
-        
-        Context: {context}
+    main_chat_system_prompt_template = """You are an assistant to a blind person. If the context is provided please use the provided \
+        context and answer accurately and truthfully based on the context. Use the given current conversation history appropriately if required.
+        If you are not sure about your answer please tell that 'I am not sure'.
 
         Current Conversation: {memory}
+
+        Context: {context}
         
         User: {query}
         Assistant:  
@@ -90,6 +91,12 @@ def main():
     ) | main_chat_system_prompt | llm_chat | StrOutputParser()
 
 
+
+    ## midas model
+    midas_model = load_midas_model(model_type="DPT_Hybrid")
+    midas_transforms = load_transformations()
+
+
     chat_history = []
     while True:
 
@@ -99,17 +106,17 @@ def main():
             break
 
         intent = intent_analyser_chain.invoke({"question" : user_input})
-        # print(intent)
+        print(intent)
 
         final_vision_prompt = GENERAL_VISION_PROMPT.format(query=user_input)
 
         vision_response = ""
         if intent == "Photo is required":
 
-            rgb_image = Image.open("images/total-view-4.jpg")
+            rgb_image = Image.open("images/london-street-view-songquan-deng.jpg")
             rgb_image = rgb_image.convert("RGB")
 
-            depth_image = get_depth_map_image(image=rgb_image)
+            depth_image = get_depth_map_image(image=rgb_image,midas_model=midas_model,midas_tranforms=midas_transforms)
             # print(depth_image.size,rgb_image.size)
             
             tmp_message = HumanMessage(
