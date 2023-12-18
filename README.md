@@ -2,6 +2,6 @@ This is a starter project to explore google gemini-pro and google gemini-pro-vis
 
 Steps to run the program:
     1. pip install -r requirements.txt
-    2. python3 project_v1/project_code.py
+    1. python3 project_v1/project_code.py
 
 Note that the images used in this repo are not mine and found from the internet and credit to the original authors.
