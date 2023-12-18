@@ -1,6 +1,8 @@
 This is a starter project to explore google gemini-pro and google gemini-pro-vision with langchain framework. Additionally I have used Midas model to generate depth map image for a given particular image.
 
+
 Steps to run the program:
+
     1. pip install -r requirements.txt
     1. python3 project_v1/project_code.py
 
